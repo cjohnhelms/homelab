@@ -1,5 +1,5 @@
 ---
-# file: roles/hardening/tasks/hardening.yml
+# file: roles/hardening/tasks/main.yml
 - name: Block non-required services
   firewalld:
     service: "{{ item }}"
