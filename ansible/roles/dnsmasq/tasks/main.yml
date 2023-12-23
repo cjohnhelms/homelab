@@ -1,0 +1,33 @@
+---
+# file: roles/dnsmasq/tasks/main.yml
+- name: Ensure dnsmasq package
+  dnf:
+    name: dnsmasq
+    state: latest
+  register: dnspackage
+- name: Dnsmasq config
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+  register: dnsconfig
+- name: Restart dnsmasq
+  systemd_service:
+    name: dnsmasq.service
+    daemon-reload: true
+    state: restarted
+    enabled: true
+  when: dnsconfig is changed or dnspackage is changed
+- name: Ensure dnsmasq is running
+  service:
+    name: dnsmasq
+    state: started
+    enabled: true
+- name: Enable required services
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop:
+    - dhcp
+    - dns
