@@ -1,1 +1,5 @@
+[virtualization_server]
 homelab1
+
+[network_server]
+homelab2

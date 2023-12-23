@@ -1,0 +1,7 @@
+---
+- hosts: homelab2
+  roles:
+    - common
+    - hardening
+    - openvpn
+    - dnsmasq

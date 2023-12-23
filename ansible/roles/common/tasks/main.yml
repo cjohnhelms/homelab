@@ -1,0 +1,36 @@
+---
+# file: roles/common/tasks/main.yml
+- name: Copy EPEl GPG key
+  copy:
+    src: RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+- name: Import EPEL GPG key
+  rpm_key:
+    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
+    state: present
+- name: Install EPEL repo
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm
+    state: present
+- name: Ensure common packages
+  dnf:
+    name: "{{ item }}"
+    state: installed
+  loop: "{{ common_packages }}"
+- name: Ensure running common services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ common_services }}"
+- name: Ensure common users
+  user:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ common_users }}"
+- name: Add authorized keys
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ pubkey }}"
+    state: present
+  loop: "{{ common_users }}"

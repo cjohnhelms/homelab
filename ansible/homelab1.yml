@@ -1,0 +1,6 @@
+---
+- hosts: homelab1
+  roles:
+    - common
+    - hardening
+    - kvm
