@@ -1,0 +1,5 @@
+---
+# file: roles/hardening/handlers/main.yml
+- name: reboot_host
+  ansible.builtin.reboot:
+    reboot_timeout: 360

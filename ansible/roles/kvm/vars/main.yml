@@ -1,0 +1,20 @@
+---
+# file: roles/kvm/vars/main.yml
+required_vms:
+  - ansible1
+  - ansible2
+packages:
+  - libvirt
+  - qemu-kvm
+  - virt-install
+  - virt-viewer
+  - cockpit
+  - cockpit-machines
+sockets:
+  - qemu
+  - network
+  - nodedev
+  - nwfilter
+  - secret
+  - storage
+  - interface
