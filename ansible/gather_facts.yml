@@ -1,7 +1,7 @@
 ---
-- name: gather facts
+- name: Gather facts
   hosts: all
   tasks:
-    - name: gather facts
+    - name: Print facts
       debug:
         var: ansible_facts

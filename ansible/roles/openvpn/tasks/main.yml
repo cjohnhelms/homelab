@@ -5,6 +5,7 @@
     name: openvpn
     state: latest
   register: vpnpackage
+  when: ansible_facts['os_family'] == "RedHat"
 - name: Openvpn config
   copy:
     src: server.conf
@@ -22,7 +23,7 @@
     name: openvpn-server@server
     state: started
     enabled: true
-- name: Enable required services
+- name: Enable required services through firewall
   firewalld:
     service: openvpn
     state: enabled

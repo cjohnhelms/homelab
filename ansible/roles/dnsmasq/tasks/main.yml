@@ -5,6 +5,7 @@
     name: dnsmasq
     state: latest
   register: dnspackage
+  when: ansible_facts['os_family'] == "RedHat"
 - name: Dnsmasq config
   copy:
     src: dnsmasq.conf
@@ -28,6 +29,7 @@
     state: enabled
     permanent: yes
     immediate: yes
+  when: ansible_facts['os_family'] == "RedHat"
   loop:
     - dhcp
     - dns
