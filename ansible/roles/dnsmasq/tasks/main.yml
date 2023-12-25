@@ -23,7 +23,7 @@
     name: dnsmasq
     state: started
     enabled: true
-- name: Enable required services
+- name: Allow DHCP and DNS through firewall
   firewalld:
     service: "{{ item }}"
     state: enabled

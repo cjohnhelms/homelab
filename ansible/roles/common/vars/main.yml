@@ -3,7 +3,6 @@
 common_packages:
   - vim
   - python
-  - podman
   - nmap
   - curl
 common_services:
