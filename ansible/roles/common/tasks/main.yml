@@ -1,5 +1,13 @@
 ---
 # file: roles/common/tasks/main.yml
+- name: System Stats
+      debug:
+        msg: |
+          ipv4: {{ ansible_facts['default_ipv4']['address'] }}/{{ ansible_facts['default_ipv4']['prefix'] }} {{ ansible_facts['default_ipv4']['gateway'] }}
+          os: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}
+          volumes: {{ ansible_facts['lvm']['lvs'] }}
+          python: {{ ansible_facts['python_version'] }}
+          selinux: {{ ansible_facts['selinux']['config_mode'] }}
 - name: Copy EPEl GPG key
   copy:
     src: RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}
