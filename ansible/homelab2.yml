@@ -2,7 +2,7 @@
 # file: homelab2.yml
 # playbook for homelab2
 - name: Configure homelab2.cjohnhelms.local
-  hosts: homelab2
+  hosts: homelab2.cjohnhelms.local
   roles:
     - common
     - hardening
