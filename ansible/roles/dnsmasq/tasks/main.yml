@@ -1,0 +1,35 @@
+---
+# file: roles/dnsmasq/tasks/main.yml
+- name: Ensure dnsmasq package
+  dnf:
+    name: dnsmasq
+    state: latest
+  register: dnspackage
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Dnsmasq config
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+  register: dnsconfig
+- name: Restart dnsmasq
+  systemd_service:
+    name: dnsmasq.service
+    daemon-reload: true
+    state: restarted
+    enabled: true
+  when: dnsconfig is changed or dnspackage is changed
+- name: Ensure dnsmasq is running
+  service:
+    name: dnsmasq
+    state: started
+    enabled: true
+- name: Allow DHCP and DNS through firewall
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: ansible_facts['os_family'] == "RedHat"
+  loop:
+    - dhcp
+    - dns

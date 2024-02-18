@@ -1,0 +1,31 @@
+---
+# file: roles/openvpn/tasks/main.yml
+- name: Ensure OpenVPN package
+  dnf:
+    name: openvpn
+    state: latest
+  register: vpnpackage
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Openvpn config
+  copy:
+    src: server.conf
+    dest: /etc/openvpn/server.conf
+  register: vpnconfig
+- name: Restart OpenVPN
+  systemd_service:
+    name: openvpn-server@server.service
+    daemon-reload: true
+    state: restarted
+    enabled: true
+  when: vpnconfig is changed or vpnpackage is changed
+- name: Ensure OpenVPN is running
+  service:
+    name: openvpn-server@server
+    state: started
+    enabled: true
+- name: Enable required services through firewall
+  firewalld:
+    service: openvpn
+    state: enabled
+    permanent: yes
+    immediate: yes

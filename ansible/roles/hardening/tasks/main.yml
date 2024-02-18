@@ -1,0 +1,30 @@
+---
+# file: roles/hardening/tasks/main.yml
+- name: Block non-required services
+  firewalld:
+    service: "{{ item }}"
+    state: disabled
+    permanent: yes
+    immediate: yes
+  loop:
+    - dhcpv6-client
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Enable required services
+  firewalld:
+    service: ssh
+    state: enabled
+    permanent: yes
+    immediate: yes
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Ensure SELinux is enabled and enforcing
+  selinux:
+    policy: targeted
+    state: enforcing
+  register: selinux_status
+  when: ansible_facts['os_family'] == "RedHat"
+- name: Verify if reboot needed
+  ansible.builtin.debug:
+    msg: "Reboot needed: {{ selinux_status.reboot_required }}"
+  changed_when: selinux_status.reboot_required | bool
+  notify: reboot_host
+  when: ansible_facts['os_family'] == "RedHat"

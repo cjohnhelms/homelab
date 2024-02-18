@@ -1,0 +1,5 @@
+[virtualization_server]
+homelab1.cjohnhelms.local
+
+[network_server]
+homelab2.cjohnhelms.local
