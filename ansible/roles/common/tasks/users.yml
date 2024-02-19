@@ -1,0 +1,12 @@
+## user management
+- name: Ensure common users
+  user:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ common_users }}"
+- name: Add authorized keys
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ pubkey }}"
+    state: present
+  loop: "{{ common_users }}"

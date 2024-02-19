@@ -1,0 +1,8 @@
+## service management
+- name: Ensure running common services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ common_services }}"
+  when: ansible_facts['os_family'] == "RedHat"
