@@ -1,0 +1,12 @@
+#!/bin/bash
+
+usage() {
+  echo "usage: rhce [--connect | --shutdown | --start]"
+}
+
+case "$1" in
+--connect) ansible_master=$(aws ec2 describe-instances --instance-ids i-0f178b4e5257ca05b --query 'Reservations[*].Instances[*].PublicIpAddress' --output text) && ssh -A ansible@${ansible_master} ;;
+--stop) aws ec2 stop-instances --instance-ids i-0f178b4e5257ca05b i-00ed089968a90cb25 i-0568d1d4804cdb857 ;;
+--start) aws ec2 start-instances --instance-ids i-0f178b4e5257ca05b i-00ed089968a90cb25 i-0568d1d4804cdb857 ;;
+*) usage ;;
+esac
