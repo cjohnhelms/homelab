@@ -20,7 +20,7 @@ spec:
         name: sentinel
         volumeMounts:
         - name: tz
-          mountPath: /etc/timezone
+          mountPath: /etc/localtime
           readOnly: true
         env:
         - name: SENDER

@@ -1,0 +1,4 @@
+exports:
+  - path: /nfs/dnsmasq
+    hosts: "*"
+    opts: (ro,sync)

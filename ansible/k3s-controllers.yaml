@@ -29,11 +29,6 @@
         regexp: '\.\s+<\(k3s completion bash\)'
         line: ". <(k3s completion bash)  # Added by k3s-ansible"
 
-    - name: install qemu guest agent
-      apt:
-        name: qemu-guest-agent
-        state: present
-
 - name: Initialize cluster
   hosts:
     - 192.168.1.202

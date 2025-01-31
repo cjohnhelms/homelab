@@ -6,3 +6,4 @@ common_packages:
   - vim
   - nmap
   - curl
+  - qemu-guest-agent
