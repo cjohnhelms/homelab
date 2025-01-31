@@ -1,0 +1,4 @@
+---
+# file: roles/common/tasks/main.yml
+- include_tasks: packages.yaml
+- include_tasks: users.yaml

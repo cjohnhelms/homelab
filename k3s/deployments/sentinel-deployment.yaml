@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sentinel
+  name: sentinel
+spec:
+  replicas:
+  selector:
+    matchLabels:
+      app: sentinel
+  template:
+    metadata:
+      labels:
+        app: sentinel
+    spec:
+      containers:
+      - image: ghcr.io/cjohnhelms/sentinel:latest
+        imagePullPolicy: Always
+        name: sentinel
+        volumeMounts:
+        - name: tz
+          mountPath: /etc/localtime
+          readOnly: true
+        env:
+        - name: SENDER
+          value: aac.sentinel@gmail.com
+        - name: NOTIFY
+          value: cjohnhelms@gmail.com,williamsdkyle7@gmail.com
+        - name: LOG_LEVEL
+          value: DEBUG
+        - name: VERSION
+          value: v0.1.0
+        - name: SCRAPE_HOUR
+          value: "2"
+        - name: SCRAPE_MIN
+          value: "0"
+        - name: EMAIL_HOUR
+          value: "15"
+        - name: EMAIL_MIN
+          value: "0"
+      volumes:
+      - name: tz
+        hostPath:
+          path: /usr/share/zoneinfo/America/Chicago

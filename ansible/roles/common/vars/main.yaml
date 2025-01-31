@@ -1,0 +1,9 @@
+common_users:
+  - cjohnhelms
+  - ansible
+pubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZz4a4zWHxhaAPEWg/EIOY+2wYjiLhuE/E5mYu1NbCP christopherhelms@MacBook-Pro.attlocal.net
+common_packages:
+  - vim
+  - nmap
+  - curl
+  - qemu-guest-agent

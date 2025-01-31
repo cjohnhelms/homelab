@@ -1,0 +1,72 @@
+---
+- name: Get export definititions
+  hosts: localhost
+  become: no
+  vars_files:
+    - ../nfs/exports.yaml
+  tasks:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ exports }}"
+    
+- name: Bootstrap NFS server
+  hosts:
+  - 192.168.1.211
+  remote_user: ansible
+  vars_files:
+    - ../nfs/exports.yaml
+  roles:
+    - common
+  tasks:
+    - name: Parition and format disk
+      community.general.parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        fs_type: ext4 
+
+    - name: Create NFS directory
+      ansible.builtin.file:
+        path: /nfs
+        state: directory
+        mode: '0755'
+    
+    - name: Mount volume
+      ansible.posix.mount:
+        path: /nfs
+        src: /dev/sdb1
+        fstype: ext4
+        state: present
+    
+    - name: Create a ext4 filesystem on /dev/sdb1
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
+
+    - name: Install nfs-kernel-server
+      ansible.builtin.apt:
+        name: nfs-kernel-server
+        state: present
+    
+    - name: Write config file
+      ansible.builtin.template:
+        src: nfs_exports_template.j2
+        dest: /etc/exports
+        owner: root
+        group: root
+        mode: "0644"
+    
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "0644"
+      loop: "{{ exports }}"
+    
+    - name: Start service
+      ansible.builtin.service:
+        name: nfs-kernel-server
+        enabled: yes
+        state: restarted
+
+    
