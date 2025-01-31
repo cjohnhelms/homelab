@@ -1,5 +1,0 @@
----
-# file: site.yml
-# import playbooks for individual nodes
-- import_playbook: homelab1.yml
-- import_playbook: homelab2.yml

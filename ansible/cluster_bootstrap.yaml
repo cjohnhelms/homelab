@@ -1,0 +1,60 @@
+---
+- name: Get install script
+  hosts:
+    - 192.168.1.202
+    - 192.168.1.203
+    - 192.168.1.204
+  remote_user: ansible
+  roles:
+    - role: common
+  tasks:
+    - name: Get k3s installed version
+      ansible.builtin.command: k3s --version
+      register: k3s_version_output
+      changed_when: false
+      ignore_errors: true
+
+    - name: Get install script
+      when: k3s_version_output.rc != 0
+      ansible.builtin.get_url:
+        url: https://get.k3s.io/
+        dest: /usr/local/bin/k3s-install.sh
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Add K3s autocomplete to user bashrc
+      ansible.builtin.lineinfile:
+        path: "/root/.bashrc"
+        regexp: '\.\s+<\(k3s completion bash\)'
+        line: ". <(k3s completion bash)  # Added by k3s-ansible"
+
+    - name: install qemu guest agent
+      apt:
+        name: qemu-guest-agent
+        state: present
+
+- name: Initialize cluster
+  hosts:
+    - 192.168.1.202
+  remote_user: ansible
+  tasks:
+    - name: Init cluster
+      when: k3s_version_output.rc != 0
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-install.sh server --cluster-init
+      environment:
+        K3S_TOKEN: "{{ K3S_TOKEN }}"
+
+- name: Add controllers
+  hosts:
+    - 192.168.1.203
+    - 192.168.1.204
+  remote_user: ansible
+  tasks:
+    - name: Add to cluster
+      when: k3s_version_output.rc != 0
+      ansible.builtin.shell:
+        cmd: /usr/local/bin/k3s-install.sh server --server=https://192.168.1.202:6443
+      environment:
+        K3S_TOKEN: "{{ K3S_TOKEN }}" 

@@ -1,4 +1,3 @@
-## user management
 - name: Ensure common users
   user:
     name: "{{ item }}"
