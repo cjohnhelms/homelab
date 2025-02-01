@@ -3,9 +3,17 @@
     name: "{{ item }}"
     state: present
   loop: "{{ common_users }}"
+
 - name: Add authorized keys
   authorized_key:
     user: "{{ item }}"
-    key: "{{ pubkey }}"
+    key: "{{ macbook_pubkey }}"
+    state: present
+  loop: "{{ common_users }}"
+
+- name: Add authorized keys
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ ubuntu_pubkey }}"
     state: present
   loop: "{{ common_users }}"

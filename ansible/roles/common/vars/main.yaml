@@ -1,7 +1,8 @@
 common_users:
   - cjohnhelms
   - ansible
-pubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZz4a4zWHxhaAPEWg/EIOY+2wYjiLhuE/E5mYu1NbCP christopherhelms@MacBook-Pro.attlocal.net
+macbook_pubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICZz4a4zWHxhaAPEWg/EIOY+2wYjiLhuE/E5mYu1NbCP christopherhelms@MacBook-Pro.attlocal.net
+ubuntu_pubkey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGpiLXPz4nkdQBdMb7W6M9GqmQ7HNag/4khd2YLlcX4 cjohnhelms@ubuntu
 common_packages:
   - vim
   - nmap
