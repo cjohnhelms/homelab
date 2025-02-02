@@ -1,4 +1,7 @@
 exports:
-  - path: /nfs/dnsmasq
+  - path: /nfs/prometheus
     hosts: "*"
     opts: (ro,sync)
+    start: 1MiB
+    end: 10GiB
+    partition: 1

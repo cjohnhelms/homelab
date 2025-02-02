@@ -21,28 +21,35 @@
     - name: Parition and format disk
       community.general.parted:
         device: /dev/sdb
-        number: 1
+        number: "{{ item.partition }}"
+        label: gpt
         state: present
         fs_type: ext4 
+        part_start: "{{ item.start }}"
+        part_end: "{{ item.end }}"
+      loop: "{{ exports }}"
+    
+    - name: Create a ext4 filesystem on /dev/sdbX
+      community.general.filesystem:
+        fstype: ext4
+        dev: "/dev/sdb{{ item.partition }}"
+      loop: "{{ exports }}"
 
-    - name: Create NFS directory
+    - name: Create directories
       ansible.builtin.file:
-        path: /nfs
+        path: "{{ item.path }}"
         state: directory
-        mode: '0755'
+        mode: "0644"
+      loop: "{{ exports }}"
     
     - name: Mount volume
       ansible.posix.mount:
-        path: /nfs
-        src: /dev/sdb1
+        path: "{{ item.path }}"
+        src: "/dev/sdb{{ item.partition }}"
         fstype: ext4
         state: present
+      loop: "{{ exports }}"
     
-    - name: Create a ext4 filesystem on /dev/sdb1
-      community.general.filesystem:
-        fstype: ext4
-        dev: /dev/sdb1
-
     - name: Install nfs-kernel-server
       ansible.builtin.apt:
         name: nfs-kernel-server
@@ -55,13 +62,6 @@
         owner: root
         group: root
         mode: "0644"
-    
-    - name: Create directories
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: directory
-        mode: "0644"
-      loop: "{{ exports }}"
     
     - name: Start service
       ansible.builtin.service:

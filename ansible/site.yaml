@@ -1,0 +1,7 @@
+---
+# file: site.yaml
+
+- import_playbook: k3s_controllers.yaml
+- import_playbook: k3s_workers.yaml
+- import_playbook: nfs_server.yaml
+#- import_playbook: dns_server.yaml

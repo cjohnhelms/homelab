@@ -1,0 +1,9 @@
+192.168.1.201       pve                 pve.cjohnhelms.local
+192.168.1.202       k3s-controller1     k3s-controller1.cjohnhelms.local
+192.168.1.203       k3s-controller2     k3s-controller2.cjohnhelms.local
+192.168.1.204       k3s-controller3     k3s-controller3.cjohnhelms.local
+192.168.1.205       k3s-worker1         k3s-worker1.cjohnhelms.local
+192.168.1.211       nfs-server1         nfs-server1.cjohnhelms.local
+
+192.168.1.253       switch1     switch2.cjohnhelms.local
+192.168.1.254       router1     router1.cjohnhelms.local
