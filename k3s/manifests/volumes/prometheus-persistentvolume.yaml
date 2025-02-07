@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: prometheus-persistentvolume
+  labels:
+    name: prometheus-persistentvolume
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10GiB
+  accessModes:
+    - readWriteMany
+  nfs:
+    server: 192.168.1.211
+    path: /nfs/prometheus

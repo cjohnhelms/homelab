@@ -1,20 +1,20 @@
 ---
 # file: roles/dnsmasq/tasks/main.yml
 - name: Ensure dnsmasq package
-  dnf:
+  apt:
     name: dnsmasq
     state: latest
   register: dnspackage
 
 - name: Dnsmasq config
   copy:
-    src: ../../../../dnsmasq/dnsmasq.conf 
+    src: ../dnsmasq/dnsmasq.conf 
     dest: /etc/dnsmasq.conf
   register: dnsconfig
 
 - name: Hosts file
   copy:
-    src: ../../../../dnsmasq/hosts
+    src: ../dnsmasq/hosts
     dest: /etc/hosts
 
 - name: Restart dnsmasq
@@ -25,6 +25,12 @@
     enabled: true
   when: dnsconfig is changed or dnspackage is changed
 
+- name: Disable systemd-resolved
+  service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+
 - name: Ensure dnsmasq is running
   service:
     name: dnsmasq
@@ -32,6 +38,7 @@
     enabled: true
 
 - name: Open firewall
+  become: yes
   community.general.ufw:
     rule: allow
     port: "{{ item }}"

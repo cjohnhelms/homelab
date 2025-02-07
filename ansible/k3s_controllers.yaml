@@ -40,6 +40,16 @@
         cmd: /usr/local/bin/k3s-install.sh server --cluster-init
       environment:
         K3S_TOKEN: "{{ K3S_TOKEN }}"
+    
+    - name: Copy manifests
+      copy:
+        src: "../k3s/manifests/{{ item }}/"
+        dest: "/var/lib/rancher/k3s/server/manifests/{{ item }}/"
+      loop:
+        - namespaces
+        - services
+        - configMaps
+        - deployments
 
 - name: Add controllers
   hosts:

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sentinel-service
+  namespace: services-namespace
+spec:
+  selector:
+    app: sentinel-deployment
+  clusterIP: 10.43.1.100
+  ports:
+    - protocol: TCP
+      port: 2112
+      targetPort: 2112
