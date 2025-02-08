@@ -12,11 +12,6 @@
     dest: /etc/dnsmasq.conf
   register: dnsconfig
 
-- name: Hosts file
-  copy:
-    src: ../dnsmasq/hosts
-    dest: /etc/hosts
-
 - name: Restart dnsmasq
   systemd_service:
     name: dnsmasq.service
