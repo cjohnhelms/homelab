@@ -50,6 +50,7 @@
         - services
         - configMaps
         - deployments
+        - volumes
 
 - name: Add controllers
   hosts:
