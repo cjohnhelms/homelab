@@ -47,14 +47,10 @@ spec:
         - name: LOG_LEVEL
           value: DEBUG
         - name: VERSION
-          value: v0.1.0
+          value: v0.1.2
         - name: SCRAPE_HOUR
           value: "2"
         - name: SCRAPE_MIN
-          value: "0"
-        - name: EMAIL_HOUR
-          value: "15"
-        - name: EMAIL_MIN
           value: "0"
       volumes:
       - name: tz
